@@ -178,7 +178,7 @@ const checkWalletConnected = async () => {
     }
 
     const accounts = await window.ethereum.request({
-      method: "eth_accounts",
+      method: "eth_requestAccounts",
     });
     // console.log("Accounts:", accounts);
 
@@ -196,8 +196,9 @@ const checkWalletConnected = async () => {
 			if (!window.ethereum) return "Install MetaMask";
 
 			const accounts = await window.ethereum.request({
-				method: "eth_accounts",
+				method: "eth_requestAccounts",
 			});
+			console.log(accounts)
 			setCurrentUser(accounts[0]);
 		} catch (error) {
 			console.log("error while wallet connection");

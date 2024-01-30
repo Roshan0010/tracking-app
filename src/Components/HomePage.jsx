@@ -43,15 +43,15 @@ useEffect(() => {
     }
   };
 
-  // fetchData();
+  fetchData();
 
 }, []);
 
 
 
   return (
-    <>
-    <Navbar/>
+    <div>
+    <Navbar />
     <Services
       setOpneProfile={setOpenProfile}
       setCompleteModel={setCompleteModel}
@@ -92,7 +92,7 @@ useEffect(() => {
 
 
     <Footer/>
-    </>
+    </div>
   )
 }
 

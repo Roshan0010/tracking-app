@@ -50,7 +50,7 @@ const Navbar = () => {
           ))
         }
         </div>
-        <div className='w-[20rem] text-center py-2 rounded-lg  bg-[#265470] justify-center item-center'>
+        <div className='w-[20rem] text-center py-2 rounded-xl px-1  bg-[#265470] justify-center item-center'>
           {
             currentUser ? (
               <>
@@ -60,7 +60,8 @@ const Navbar = () => {
             ):
             (
               <button
-              onClick={()=>connectWallet()}>
+              onClick={async () => await connectWallet()}>
+              {/* need to use async await  */}
 
               <FaUserAlt className=''/>
 
