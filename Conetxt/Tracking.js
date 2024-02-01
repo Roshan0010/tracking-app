@@ -71,7 +71,7 @@ export const TrackingProvider = ({ children }) => {
 			console.log(error);
 		}
 	};
-	const getAllShipmentsCount = async () => {
+	const getShipmentCount = async () => {
 		try {
 			if (!window.ethereum) return "Install MetaMask";
 			const accounts = await window.ethereum.request({
@@ -80,7 +80,8 @@ export const TrackingProvider = ({ children }) => {
 			const provider = new ethers.providers.JsonRpcProvider();
 
 			const contract = fetchContract(provider);
-			const shipmentsCount = await contract.getAllShipmentsCount(accounts[0]);
+			const shipmentsCount = await contract.getShipmentsCount(accounts[0]);
+			console.log(shipmentsCount);
 			return shipmentsCount.toNumber();
 		} catch (error) {
 			console.log(`get all Shipments `);
@@ -214,6 +215,32 @@ export const TrackingProvider = ({ children }) => {
 			console.log(error);
 		}
 	};
+	const getBalance = async () => {
+		try {
+			if (!window.ethereum) {
+				console.log("Install MetaMask");
+				return "Install MetaMask";
+			}
+
+			const accounts = await window.ethereum.request({
+				method: "eth_requestAccounts",
+			});
+
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			const balance = await provider.getBalance(accounts[0]);
+
+			// Convert the balance to a readable format (in Ether)
+			const formattedBalance = ethers.utils.formatEther(balance);
+
+			console.log("Account Balance:", formattedBalance);
+
+			return formattedBalance;
+		} catch (error) {
+			console.error("Error in getBalance:", error);
+			throw error; // Rethrow the error or handle it as needed
+		}
+	};
+
 	useEffect(() => {
 		checkWalletConnected();
 	});
@@ -226,7 +253,8 @@ export const TrackingProvider = ({ children }) => {
 				completeShipment,
 				getShipment,
 				startShipment,
-				getAllShipmentsCount,
+				getShipmentCount,
+				getBalance,
 				DappName,
 				currentUser,
 			}}

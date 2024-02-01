@@ -19,6 +19,7 @@ const HomePage = () => {
 		getShipment,
 		startShipment,
 		getShipmentCount,
+		getBalance
 	} = useContext(TrackingContext);
 
 	//State variable
@@ -69,6 +70,7 @@ const HomePage = () => {
 				setOpenProfile={setOpenProfile}
 				currentUser={currentUser}
 				getShipmentCount={getShipmentCount}
+				getBalance={getBalance}
 			/>
 			<CompleteShipment
 				completeModal={completeModal}
