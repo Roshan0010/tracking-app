@@ -31,7 +31,7 @@ contract Tracking {
         bool isPaid;
     }
 
-    TypeShipment[] typeShipments;
+    TypeShipment[] public typeShipments;
 
 //in event can pass atmost 3 indexed for filtering the data but not more than thant 
 event ShipmentCreated(address indexed sender,address indexed receiver,uint256 

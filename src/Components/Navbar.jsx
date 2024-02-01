@@ -29,7 +29,7 @@ const Navbar = () => {
       md:flex md:px-8   '>
         <div className='flex items-center justify-between rounded-lg
         py-5 md:block '>
-        <a href="javascript:void(0)">
+        <a href="null">
           <img src={'https://res.cloudinary.com/ddi6pgru6/image/upload/v1706533368/Syncro_1_jeskuq.jpg'}
             width={120}
             height={30}

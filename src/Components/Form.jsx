@@ -5,6 +5,7 @@ const Form = ({
   setCreateShipmentModel,
   createShipmentModel,
   createShipment,
+  
 }) => {
   const [shipment, setShipment] = useState({
     receiver: "",

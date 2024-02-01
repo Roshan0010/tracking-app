@@ -1,4 +1,4 @@
-'use client'
+"use client";
 //very important
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
@@ -6,7 +6,7 @@ import tracking from "../Conetxt/Tracking.json";
 import web3Modal from "web3modal";
 const ContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const ContractABI = tracking.abi;
-console.log(ContractABI);
+// console.log(ContractABI);
 
 const fetchContract = (signerOrProvider) =>
 	new ethers.Contract(ContractAddress, ContractABI, signerOrProvider);
@@ -41,6 +41,7 @@ export const TrackingProvider = ({ children }) => {
 			await createItem.wait();
 			console.log(createItem);
 		} catch (error) {
+			console.log("error in createShipment");
 			console.log(error);
 		}
 	};
@@ -50,19 +51,20 @@ export const TrackingProvider = ({ children }) => {
 			const contract = fetchContract(provider);
 			// console.log(provider.getCode(address))
 			// console.log(contract);
-
-			const shipments =  await contract.getAllTransactions();
+			const shipments = await contract.getAllTransactions();
+			console.log(shipments);
 			const allShipments = shipments.map((shipment) => ({
 				sender: shipment.sender,
 				receiver: shipment.receiver,
 				price: ethers.utils.formatEther(shipment.price.toString()),
 				pickupTime: shipment.pickupTime.toNumber(),
-				diliveryTime: shipment.diliveryTime.toNumber(),
+				deliverTime: shipment.deliverTime?.toNumber(),
 				distance: shipment.distance.toNumber(),
 				isPaid: shipment.isPaid,
 				status: shipment.status,
 			}));
-			console.log(`getAllShipment${allShipments}`);
+			console.log(`getAllShipment`);
+			console.log(allShipments);
 			return allShipments;
 		} catch (error) {
 			console.log("error in getallShipment");
@@ -76,7 +78,6 @@ export const TrackingProvider = ({ children }) => {
 				method: "eth_accounts",
 			});
 			const provider = new ethers.providers.JsonRpcProvider();
-			
 
 			const contract = fetchContract(provider);
 			const shipmentsCount = await contract.getAllShipmentsCount(accounts[0]);
@@ -123,9 +124,16 @@ export const TrackingProvider = ({ children }) => {
 			const accounts = await window.ethereum.request({
 				method: "eth_accounts",
 			});
+			const web3modal = new web3Modal();
+			const connection = await web3modal.connect();
+			console.log("1");
 			const provider = new ethers.providers.Web3Provider(connection);
+			console.log("2");
 			const contract = fetchContract(provider);
+			console.log("3");
+			console.log(accounts[0]);
 			const shipment = await contract.getShipment(accounts[0], index * 1);
+			console.log("4");
 
 			const SingleShipment = {
 				sender: shipment[0],
@@ -145,12 +153,13 @@ export const TrackingProvider = ({ children }) => {
 
 	const startShipment = async (getProduct) => {
 		const { receiver, index } = getProduct;
+		console.log(getProduct);
 
 		try {
 			if (!window.ethereum) return "Install MetaMask";
 
 			const accounts = await window.ethereum.request({
-				method: "eth_accounts",
+				method: "eth_requestAccounts",
 			});
 			const web3modal = new web3Modal();
 			const connection = await web3modal.connect();
@@ -170,26 +179,26 @@ export const TrackingProvider = ({ children }) => {
 	};
 
 	//Check wallet
-const checkWalletConnected = async () => {
-  try {
-    if (!window.ethereum) {
-      console.log("Install MetaMask");
-      return "Install MetaMask";
-    }
+	const checkWalletConnected = async () => {
+		try {
+			if (!window.ethereum) {
+				console.log("Install MetaMask");
+				return "Install MetaMask";
+			}
 
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    // console.log("Accounts:", accounts);
+			const accounts = await window.ethereum.request({
+				method: "eth_requestAccounts",
+			});
+			// console.log("Accounts:", accounts);
 
-    if (accounts.length) {
-      setCurrentUser(accounts[0]);
-    }
-  } catch (error) {
-    console.error("Error in checkWalletConnected:", error);
-    throw error; // Rethrow the error or handle it as needed
-  }
-};
+			if (accounts.length) {
+				setCurrentUser(accounts[0]);
+			}
+		} catch (error) {
+			console.error("Error in checkWalletConnected:", error);
+			throw error; // Rethrow the error or handle it as needed
+		}
+	};
 
 	const connectWallet = async () => {
 		try {
@@ -198,7 +207,7 @@ const checkWalletConnected = async () => {
 			const accounts = await window.ethereum.request({
 				method: "eth_requestAccounts",
 			});
-			console.log(accounts)
+			console.log(accounts);
 			setCurrentUser(accounts[0]);
 		} catch (error) {
 			console.log("error while wallet connection");
