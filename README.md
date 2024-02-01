@@ -61,3 +61,6 @@ by going to metamask and doing steps given
 1>click in account
 2>add acount or hardware
 3>import account paste the private key of the any 20 accounts given in the terminal of 2nd
+
+then create an account note id is 0 based index
+mostly in table search for your 
